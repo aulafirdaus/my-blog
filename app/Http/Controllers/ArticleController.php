@@ -58,4 +58,9 @@ class ArticleController extends Controller
         ]);
         return to_route('articles.show', $article->id);
     }
+
+    public function destroy($id){
+        DB::table('articles')->delete($id);
+        return redirect()->back();
+    }
 }

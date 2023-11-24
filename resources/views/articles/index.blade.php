@@ -5,9 +5,16 @@
                 @forelse($articles as $article)
                 <x-card class="mb-4" title="{{ $article->title }}" subtitle="{{ \Carbon\Carbon::parse($article->created_at)->format('d M, Y') }}">
                     {!! $article->body !!}
-                    <div class="mt-2 d-flex align-items-center gap-2">
-                        <a href="{{ route('articles.show', $article->id) }}" class="btn btn-primary">Read more</a>
-                        <a href="{{ route('articles.edit', $article->id) }}" class="btn btn-success">Edit</a>
+                    <div class="mt-2 d-flex align-items-center justify-content-between gap-2">
+                        <div>
+                            <a href="{{ route('articles.show', $article->id) }}" class="btn btn-primary">Read more</a>
+                            <a href="{{ route('articles.edit', $article->id) }}" class="btn btn-success">Edit</a>
+                        </div>
+                        <form action="{{ route('articles.delete', $article->id) }}" method="post">
+                            @csrf
+                            @method('delete')
+                            <button type="submit" class="btn btn-danger">Hapus</button>
+                        </form>
                     </div>
                 </x-card>
                 @empty
