@@ -28,6 +28,8 @@ Route::get('/gallery', [PageController::class, 'gallery'])->name('gallery');
 Route::get('articles', [ArticleController::class, 'index'])->name('articles');
 Route::get('articles/create', [ArticleController::class, 'create'])->name('articles.create');
 Route::post('articles', [ArticleController::class, 'store'])->name('articles.store');
+Route::get('articles/{id}/edit', [ArticleController::class, 'edit'])->name('articles.edit');
+Route::put('articles/{id}', [ArticleController::class, 'update'])->name('articles.update');
 Route::get('articles/{id}', [ArticleController::class, 'show'])->name('articles.show');
 
 # Users
