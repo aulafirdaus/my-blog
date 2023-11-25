@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ArticleController extends Controller
 {
     public function index(){
-        $articles = DB::table('articles')->orderBy('created_at','DESC')->get();
+        $articles = Article::orderBy('created_at','DESC')->get();
         return view('articles.index', [
             'articles' => $articles
         ]);
     }
 
     public function show($id){
-        $article = DB::table('articles')->find($id);
+        $article = Article::find($id);
         return view('articles.show', [
             'article' => $article
         ]);
@@ -30,17 +30,15 @@ class ArticleController extends Controller
             'title' => ['required'],
             'body' => ['required']
         ]);
-        DB::table('articles')->insert([
-            'title' => $request->title,
-            'body' => $request->body,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
+        $article = new Article();
+        $article->title = $request->title;
+        $article->body = $request->body;
+        $article->save();
         return redirect('articles');
     }
 
     public function edit($id){
-        $article = DB::table('articles')->find($id);
+        $article = Article::find($id);
         return view('articles.edit', [
             'article' => $article
         ]);
@@ -51,16 +49,15 @@ class ArticleController extends Controller
             'title' => ['required'],
             'body' => ['required'],
         ]);
-        $article = DB::table('articles')->where('id', $id)->first();
-        DB::table('articles')->where('id', $id)->update([
-            'title' => $request->title,
-            'body' => $request->body
-        ]);
+        $article = Article::where('id', $id)->first();
+        $article->title = $request->title;
+        $article->body = $request->body;
+        $article->save();
         return to_route('articles.show', $article->id);
     }
 
     public function destroy($id){
-        DB::table('articles')->delete($id);
-        return redirect()->back();
+        Article::find($id)->delete($id);
+        return back();
     }
 }
