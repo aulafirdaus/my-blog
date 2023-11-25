@@ -16,6 +16,7 @@ class ArticleController extends Controller
 
     public function show($id){
         $article = Article::find($id);
+        abort_if(!$article, 404);
         return view('articles.show', [
             'article' => $article
         ]);
@@ -26,14 +27,11 @@ class ArticleController extends Controller
     }
 
     public function store(Request $request){
-        $request->validate([
+        $atributes = $request->validate([
             'title' => ['required'],
             'body' => ['required']
         ]);
-        $article = new Article();
-        $article->title = $request->title;
-        $article->body = $request->body;
-        $article->save();
+        Article::create($atributes);
         return redirect('articles');
     }
 
@@ -45,14 +43,12 @@ class ArticleController extends Controller
     }
 
     public function update(Request $request, $id){
-        $request->validate([
+        $atributes = $request->validate([
             'title' => ['required'],
             'body' => ['required'],
         ]);
         $article = Article::where('id', $id)->first();
-        $article->title = $request->title;
-        $article->body = $request->body;
-        $article->save();
+        $article->update($atributes);
         return to_route('articles.show', $article->id);
     }
 
