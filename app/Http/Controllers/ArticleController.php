@@ -14,9 +14,7 @@ class ArticleController extends Controller
         ]);
     }
 
-    public function show($id){
-        $article = Article::find($id);
-        abort_if(!$article, 404);
+    public function show(Article $article){
         return view('articles.show', [
             'article' => $article
         ]);
@@ -35,25 +33,23 @@ class ArticleController extends Controller
         return redirect('articles');
     }
 
-    public function edit($id){
-        $article = Article::find($id);
+    public function edit(Article $article){
         return view('articles.edit', [
             'article' => $article
         ]);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, Article $article){
         $atributes = $request->validate([
             'title' => ['required'],
             'body' => ['required'],
         ]);
-        $article = Article::where('id', $id)->first();
         $article->update($atributes);
         return to_route('articles.show', $article->id);
     }
 
-    public function destroy($id){
-        Article::find($id)->delete($id);
+    public function destroy(Article $article){
+        $article->delete();
         return back();
     }
 }
