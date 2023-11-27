@@ -29,8 +29,13 @@
             </form> --}}
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a href="{{ route('register') }}" class="nav-link nav-link {{ Request::is('register') ? 'active' : '' }}">
+                    <a href="{{ route('register') }}" class="nav-link {{ Request::is('register') ? 'active' : '' }}">
                         Register
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('login') }}" class="nav-link {{ Request::is('login') ? 'active' : '' }}">
+                        Login
                     </a>
                 </li>
             </ul>

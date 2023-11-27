@@ -3,6 +3,7 @@
 use App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserController;
@@ -41,4 +42,10 @@ Route::delete('/users/{user}', fn ($user) => "Delete user {$user}");
 Route::controller(RegisterController::class)->group(function () {
     Route::get('register', 'showRegistrationForm')->name('register');
     Route::post('register', 'registerUser')->name('register');
+});
+
+# Login
+Route::controller(LoginController::class)->group(function () {
+    Route::get('login', 'loginForm')->name('login');
+    Route::post('login', 'loginUser')->name('login');
 });
