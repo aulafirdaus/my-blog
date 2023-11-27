@@ -7,10 +7,10 @@
                     {!! $article->body !!}
                     <div class="mt-2 d-flex align-items-center justify-content-between gap-2">
                         <div>
-                            <a href="{{ route('articles.show', $article->id) }}" class="btn btn-primary">Read more</a>
-                            <a href="{{ route('articles.edit', $article->id) }}" class="btn btn-success">Edit</a>
+                            <a href="{{ route('articles.show', $article) }}" class="btn btn-primary">Read more</a>
+                            <a href="{{ route('articles.edit', $article) }}" class="btn btn-success">Edit</a>
                         </div>
-                        <form action="{{ route('articles.delete', $article->id) }}" method="post">
+                        <form action="{{ route('articles.delete', $article) }}" method="post">
                             @csrf
                             @method('delete')
                             <button type="submit" class="btn btn-danger">Hapus</button>
