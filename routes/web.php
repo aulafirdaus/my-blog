@@ -4,6 +4,7 @@ use App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -36,3 +37,8 @@ Route::get('users/{user}/edit', fn ($user) => "Edit User {$user}");
 Route::put('users/{user}', fn ($user) => "Update user {$user}");
 Route::delete('/users/{user}', fn ($user) => "Delete user {$user}");
 
+# Register
+Route::controller(RegisterController::class)->group(function () {
+    Route::get('register', 'showRegistrationForm')->name('register');
+    Route::post('register', 'registerUser')->name('register');
+});
