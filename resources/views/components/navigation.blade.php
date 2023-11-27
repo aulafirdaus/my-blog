@@ -20,7 +20,7 @@
                     <a class="nav-link {{ Request::is('users') ? 'active' : '' }}" href="{{ route('users') }}">Users</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('articles') ? 'active' : '' }}" href="{{ route('articles') }}">Articles</a>
+                    <a class="nav-link {{ Request::is('articles') ? 'active' : '' }}" href="{{ route('articles.index') }}">Articles</a>
                 </li>
             </ul>
             <form class="d-flex" role="search">

@@ -10,7 +10,7 @@
                             <a href="{{ route('articles.show', $article) }}" class="btn btn-primary">Read more</a>
                             <a href="{{ route('articles.edit', $article) }}" class="btn btn-success">Edit</a>
                         </div>
-                        <form action="{{ route('articles.delete', $article) }}" method="post">
+                        <form action="{{ route('articles.destroy', $article) }}" method="post">
                             @csrf
                             @method('delete')
                             <button type="submit" class="btn btn-danger">Hapus</button>
