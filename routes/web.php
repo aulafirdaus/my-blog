@@ -38,14 +38,15 @@ Route::get('users/{user}/edit', fn ($user) => "Edit User {$user}");
 Route::put('users/{user}', fn ($user) => "Update user {$user}");
 Route::delete('/users/{user}', fn ($user) => "Delete user {$user}");
 
-# Register
-Route::controller(RegisterController::class)->group(function () {
-    Route::get('register', 'showRegistrationForm')->name('register');
-    Route::post('register', 'registerUser')->name('register');
-});
-
-# Login
-Route::controller(LoginController::class)->group(function () {
-    Route::get('login', 'loginForm')->name('login');
-    Route::post('login', 'loginUser')->name('login');
+Route::middleware('guest')->group(function () {
+    # Register
+    Route::controller(RegisterController::class)->group(function () {
+        Route::get('register', 'showRegistrationForm')->name('register');
+        Route::post('register', 'registerUser')->name('register');
+    });
+    # Login
+    Route::controller(LoginController::class)->group(function () {
+        Route::get('login', 'showLoginForm')->name('login');
+        Route::post('login', 'loginUser')->name('login');
+    });
 });

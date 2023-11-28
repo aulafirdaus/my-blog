@@ -28,6 +28,17 @@
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form> --}}
             <ul class="navbar-nav">
+                @auth
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }}</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#scrollspyHeading3" class="dropdown-item">Settings</a></li>
+                        <li><a href="#scrollspyHeading4" class="dropdown-item">Change password</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a href="#scrollspyHeading5" class="dropdown-item">Logout</a></li>
+                    </ul>
+                </li>
+                @else
                 <li class="nav-item">
                     <a href="{{ route('register') }}" class="nav-link {{ Request::is('register') ? 'active' : '' }}">
                         Register
@@ -38,6 +49,7 @@
                         Login
                     </a>
                 </li>
+                @endauth
             </ul>
         </div>
     </div>
