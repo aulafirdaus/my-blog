@@ -35,7 +35,11 @@
                         <li><a href="#scrollspyHeading3" class="dropdown-item">Settings</a></li>
                         <li><a href="#scrollspyHeading4" class="dropdown-item">Change password</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a href="#scrollspyHeading5" class="dropdown-item">Logout</a></li>
+                        <li>
+                            <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                                <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault(); this.closest('form').submit();">Logout</a></li>
+                            </form>
                     </ul>
                 </li>
                 @else
