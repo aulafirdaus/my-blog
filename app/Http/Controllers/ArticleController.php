@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
+    public function __construct(){
+        $this->middleware(['auth', 'verified'])->except(['show', 'index']);
+    }
+
     public function index(){
         $articles = Article::orderBy('created_at','DESC')->get();
         return view('articles.index', [

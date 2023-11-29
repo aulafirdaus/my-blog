@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 class RegisterController extends Controller
 {
@@ -21,12 +22,16 @@ class RegisterController extends Controller
             'password' => ['required', 'min:8', 'confirmed'],
         ]);
 
-        $user = User::create([
+        tap(User::create([
                     'name' => $request->name,
                     'email' => $request->email,
                     'password' => bcrypt($request->password),
-                ]);
-        Auth::login($user);
+                ]), function ($user){
+                    if ($user instanceof MustVerifyEmail && ! $user->hasVerifiedEmail()){
+                        $user->sendEmailVerificationNotification();
+                    }
+                    Auth::login($user);
+                });
         return redirect(RouteServiceProvider::HOME);
     }
 }
