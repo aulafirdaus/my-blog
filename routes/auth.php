@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EmailVerificationNotificationController;
+use App\Http\Controllers\ForgotPasswordController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
@@ -17,6 +18,9 @@ Route::middleware('guest')->group(function () {
         Route::get('login', 'showLoginForm')->name('login');
         Route::post('login', 'loginUser')->name('login');
     });
+
+    Route::get('forgot-password', [ForgotPasswordController::class, 'create'])->name('password.request');
+    Route::post('forgot-password', [ForgotPasswordController::class, 'store'])->name('password.email');
 });
 
 # Verify Email dan Logout
