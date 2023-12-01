@@ -2,6 +2,11 @@
     <div class="container">
         <div class="col-md-6">
             <x-card title="Login" subtitle="Login to your account">
+                @if(session('status'))
+                    <div class="alert alert-success">
+                        {{ session('status') }}
+                    </div>
+                @endif
                 <form action="{{ route('login') }}" method="post">
                     @csrf
                     <div class="mb-4">
