@@ -4,7 +4,8 @@
             <div class="col-md-8">
                 <h2>{{ $article->title }}</h2>
                 <div class="text-muted">
-                    {{ \Carbon\Carbon::parse($article->created_at)->format('d F, Y') }}
+                    {{ $article->created_at->format('d F, Y') }}
+                    Authored by {{ $author->name }}
                 </div>
                 <hr>
                 {{ $article->body }}
