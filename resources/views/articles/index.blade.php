@@ -3,7 +3,10 @@
         <div class="row">
             <div class="col-md-8">
                 @forelse($articles as $article)
-                <x-card class="mb-4" title="{{ $article->title }}" subtitle="{{ \Carbon\Carbon::parse($article->created_at)->format('d M, Y') }}">
+                <x-card class="mb-4" title="{{ $article->title }}">
+                    @slot('subtitle')
+                        {{ $article->created_at->format('d F, Y') }} authored by {{ $article->author->name }}
+                    @endslot
                     {!! $article->body !!}
                     <div class="mt-2 d-flex align-items-center justify-content-between gap-2">
                         <div>
@@ -24,8 +27,13 @@
                 @endforelse
             </div>
             <div class="col-md-4">
-                <a href="{{ route('articles.create') }}" class="btn btn-primary w-100">
-                Create Article</a>
+                @auth
+                        <a href="{{ route('articles.create') }}" class="btn btn-primary w-100">
+                        Create Article</a>
+                @else
+                        <a href="/login" class="btn btn-primary w-100">
+                        Login to create new article</a>
+                @endauth
             </div>
         </div>
     </div>

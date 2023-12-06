@@ -22,7 +22,6 @@ class ArticleController extends Controller
     public function show(Article $article){
         return view('articles.show', [
             'article' => $article,
-            'author' => User::find($article->user_id)
         ]);
     }
 
@@ -35,8 +34,8 @@ class ArticleController extends Controller
             'title' => ['required'],
             'body' => ['required']
         ]);
-        Article::create($atributes);
-        return redirect('articles');
+        $article = auth()->user()->articles()->create($atributes);
+        return to_route('articles.show', $article);
     }
 
     public function edit(Article $article){

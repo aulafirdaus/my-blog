@@ -5,7 +5,7 @@
                 <h2>{{ $article->title }}</h2>
                 <div class="text-muted">
                     {{ $article->created_at->format('d F, Y') }}
-                    Authored by {{ $author->name }}
+                    Authored by {{ $article->author->name }}
                 </div>
                 <hr>
                 {{ $article->body }}
