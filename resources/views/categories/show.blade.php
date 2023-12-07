@@ -30,7 +30,7 @@
                         </div>
                     </x-card>
                 @empty
-                    <div class="alert alert-info">Tidak ada data</div
+                    <div class="alert alert-info">Tidak ada data</div>
                 @endforelse
             </div>
         </div>
