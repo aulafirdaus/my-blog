@@ -5,7 +5,7 @@
                 @forelse($articles as $article)
                 <x-card class="mb-4" title="{{ $article->title }}">
                     @slot('subtitle')
-                        {{ $article->created_at->format('d F, Y') }} authored by {{ $article->author->name }}
+                        {{ $article->created_at->format('d F, Y') }} authored by {{ $article->user->name }}
                     @endslot
                     {!! $article->body !!}
                     <div class="mt-2 d-flex align-items-center justify-content-between gap-2">

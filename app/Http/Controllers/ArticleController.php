@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Article;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
+    public $categories;
     public function __construct(){
         $this->middleware(['auth', 'verified'])->except(['show', 'index']);
+        $this->categories = Category::select('id', 'name')->get();
     }
 
     public function index(){
@@ -26,21 +29,27 @@ class ArticleController extends Controller
     }
 
     public function create(){
-        return view('articles.create');
+        return view('articles.create', [
+            'article' => new Article(),
+            'categories' => $this->categories,
+        ]);
     }
 
     public function store(Request $request){
         $atributes = $request->validate([
             'title' => ['required'],
-            'body' => ['required']
+            'body' => ['required'],
+            'category' => ['required', 'exists:categories,id'],
         ]);
+        $atributes['category_id'] = $request->category;
         $article = auth()->user()->articles()->create($atributes);
         return to_route('articles.show', $article);
     }
 
     public function edit(Article $article){
         return view('articles.edit', [
-            'article' => $article
+            'article' => $article,
+            'categories' => $this->categories,
         ]);
     }
 
@@ -48,7 +57,9 @@ class ArticleController extends Controller
         $atributes = $request->validate([
             'title' => ['required'],
             'body' => ['required'],
+            'category' => ['required', 'exists:categories,id'],
         ]);
+        $atributes['category_id'] = $request->category;
         $article->update($atributes);
         return to_route('articles.show', $article->id);
     }

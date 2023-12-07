@@ -36,6 +36,17 @@
                         <li><a href="#scrollspyHeading4" class="dropdown-item">Change password</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
+                            <a href="{{ route('articles.create') }}" class="dropdown-item">
+                                Create new article
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('categories.create') }}" class="dropdown-item">
+                                Create new category
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
                             <form method="POST" action="{{ route('logout') }}">
                             @csrf
                                 <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault(); this.closest('form').submit();">Logout</a></li>
