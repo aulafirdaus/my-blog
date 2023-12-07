@@ -10,8 +10,12 @@ class Article extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'category_id', 'title', 'body'
+        'user_id', 'category_id', 'title', 'slug', 'body'
     ];
+
+    public function getRouteKeyName(){
+        return 'slug';
+    }
 
     public function user(){
         return $this->belongsTo(User::class);

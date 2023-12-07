@@ -36,13 +36,18 @@ class ArticleController extends Controller
     }
 
     public function store(Request $request){
-        $atributes = $request->validate([
+        $request->validate([
             'title' => ['required'],
             'body' => ['required'],
             'category' => ['required', 'exists:categories,id'],
         ]);
-        $atributes['category_id'] = $request->category;
-        $article = auth()->user()->articles()->create($atributes);
+        // $atributes['category_id'] = $request->category;
+        $article = auth()->user()->articles()->create([
+            'title' => $title = $request->title,
+            'slug' => str($title . ' ' . str()->random(3))->slug(),
+            'body' => $request->body,
+            'category_id' => $request->category,
+        ]);
         return to_route('articles.show', $article);
     }
 
@@ -54,13 +59,18 @@ class ArticleController extends Controller
     }
 
     public function update(Request $request, Article $article){
-        $atributes = $request->validate([
+        $request->validate([
             'title' => ['required'],
             'body' => ['required'],
             'category' => ['required', 'exists:categories,id'],
         ]);
-        $atributes['category_id'] = $request->category;
-        $article->update($atributes);
+        // $atributes['category_id'] = $request->category;
+        $article->update([
+            'title' => $title = $request->title,
+            'slug' => str($title . ' ' . str()->random(3))->slug(),
+            'body' => $request->body,
+            'category_id' => $request->category,
+        ]);
         return to_route('articles.show', $article->id);
     }
 
