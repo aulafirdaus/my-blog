@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -28,6 +29,7 @@ Route::get('/gallery', [PageController::class, 'gallery'])->name('gallery');
 # Articles
 Route::resource('articles', ArticleController::class);
 Route::resource('categories', CategoryController::class);
+Route::resource('tags', TagController::class);
 
 # Users
 Route::get('users', [UserController::class, 'index'])->name('users');

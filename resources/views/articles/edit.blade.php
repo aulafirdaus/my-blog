@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-8">
                 <x-card class="mb-4" title="Edit Artikel" subtitle="{{ $article->title }}">
-                    <form method='post' action="{{ route('articles.update', $article->id) }}">
+                    <form method='post' action="{{ route('articles.update', $article) }}">
                         @method('put')
                         @include('articles.form', ['submit' => 'Update'])
                     </form>

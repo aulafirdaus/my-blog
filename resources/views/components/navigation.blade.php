@@ -47,6 +47,12 @@
                         </li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
+                            <a class="dropdown-item" href="{{ route('tags.create') }}">
+                                Create new tag
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
                             <form method="POST" action="{{ route('logout') }}">
                             @csrf
                                 <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault(); this.closest('form').submit();">Logout</a></li>

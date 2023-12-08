@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tag;
 use App\Models\User;
 use App\Models\Article;
 use App\Models\Category;
@@ -10,9 +11,11 @@ use Illuminate\Http\Request;
 class ArticleController extends Controller
 {
     public $categories;
+    public $tags;
     public function __construct(){
         $this->middleware(['auth', 'verified'])->except(['show', 'index']);
         $this->categories = Category::select('id', 'name')->get();
+        $this->tags = Tag::select('id', 'name')->get();
     }
 
     public function index(){
@@ -32,6 +35,7 @@ class ArticleController extends Controller
         return view('articles.create', [
             'article' => new Article(),
             'categories' => $this->categories,
+            'tags' => $this->tags,
         ]);
     }
 
@@ -40,6 +44,7 @@ class ArticleController extends Controller
             'title' => ['required'],
             'body' => ['required'],
             'category' => ['required', 'exists:categories,id'],
+            'tags' => ['required', 'array'],
         ]);
         // $atributes['category_id'] = $request->category;
         $article = auth()->user()->articles()->create([
@@ -48,6 +53,8 @@ class ArticleController extends Controller
             'body' => $request->body,
             'category_id' => $request->category,
         ]);
+
+        $article->tags()->attach($request->tags);
         return to_route('articles.show', $article);
     }
 
@@ -55,6 +62,7 @@ class ArticleController extends Controller
         return view('articles.edit', [
             'article' => $article,
             'categories' => $this->categories,
+            'tags' => $this->tags,
         ]);
     }
 
@@ -63,6 +71,7 @@ class ArticleController extends Controller
             'title' => ['required'],
             'body' => ['required'],
             'category' => ['required', 'exists:categories,id'],
+            'tags' => ['required', 'array'],
         ]);
         // $atributes['category_id'] = $request->category;
         $article->update([
@@ -71,7 +80,8 @@ class ArticleController extends Controller
             'body' => $request->body,
             'category_id' => $request->category,
         ]);
-        return to_route('articles.show', $article->id);
+        $article->tags()->sync($request->tags, true);
+        return to_route('articles.show', $article);
     }
 
     public function destroy(Article $article){
