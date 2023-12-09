@@ -1,13 +1,17 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Articles;
 
 use Illuminate\View\Component;
 
-class Article extends Component
+class Single extends Component
 {
-    public $article;
-    public function __construct($article)
+    /**
+     * Create a new component instance.
+     *
+     * @return void
+     */
+    public function __construct(public $article)
     {
         $this->article = $article;
     }
@@ -19,6 +23,6 @@ class Article extends Component
      */
     public function render()
     {
-        return view('components.article');
+        return view('components.articles.single');
     }
 }

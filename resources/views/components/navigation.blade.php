@@ -22,6 +22,19 @@
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('articles') ? 'active' : '' }}" href="{{ route('articles.index') }}">Articles</a>
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                        aria-expanded="false">Categories</a>
+                    <ul class="dropdown-menu">
+                        @foreach ($categories as $category)
+                        <li>
+                            <a class="dropdown-item" href="{{ route('categories.show', $category) }}">
+                                {{ $category->name }}
+                            </a>
+                        </li>
+                        @endforeach
+                    </ul>
+                </li>
             </ul>
             {{-- <form class="d-flex" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

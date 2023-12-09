@@ -19,6 +19,10 @@ class AppLayout extends Component
      */
     public function render()
     {
-        return view('layouts.app');
+        $categories = \App\Models\Category::query()
+            ->select('name', 'slug')
+            ->whereHas('articles')
+            ->get();
+        return view('layouts.app', compact('categories'));
     }
 }
