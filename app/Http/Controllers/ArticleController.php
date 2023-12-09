@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ArticleController extends Controller
 {
@@ -46,13 +47,16 @@ class ArticleController extends Controller
             'body' => ['required'],
             'category' => ['required', 'exists:categories,id'],
             'tags' => ['required', 'array'],
+            'picture' => ['nullable', 'mimes:jpg,jpeg,png'],
         ]);
         // $atributes['category_id'] = $request->category;
+        $fileRequest = $request->file('picture');
         $article = auth()->user()->articles()->create([
             'title' => $title = $request->title,
-            'slug' => str($title . ' ' . str()->random(3))->slug(),
+            'slug' => $slug = str($title . ' ' . str()->random(3))->slug(),
             'body' => $request->body,
             'category_id' => $request->category,
+            'picture' => $request->has('picture') ? $fileRequest->storeAs('articles/images', $slug . $fileRequest->extension()) : null,
         ]);
 
         $article->tags()->attach($request->tags);
@@ -73,19 +77,26 @@ class ArticleController extends Controller
             'body' => ['required'],
             'category' => ['required', 'exists:categories,id'],
             'tags' => ['required', 'array'],
+            'picture' => ['nullable', 'mimes:jpg,bmp,png'],
         ]);
-        // $atributes['category_id'] = $request->category;
+        $fileRequest = $request->file('picture');
         $article->update([
             'title' => $title = $request->title,
-            'slug' => str($title . ' ' . str()->random(3))->slug(),
             'body' => $request->body,
             'category_id' => $request->category,
+            'picture' => $request->has('picture') ?
+            $fileRequest->storeAs('articles/images', $article->slug . $fileRequest->extension())
+            : $article->picture,
         ]);
         $article->tags()->sync($request->tags, true);
         return to_route('articles.show', $article);
     }
 
     public function destroy(Article $article){
+        if ($article->picture) {
+            Storage::delete($article->picture);
+        }
+        $article->tags()->detach();
         $article->delete();
         return back();
     }
