@@ -1,38 +1,21 @@
-<x-app-layout title="Category: {{ $category->name }}">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3">
-                <h4 class="text-end">{{ $category->name }} <span class="text-muted">({{ $category->articles->count() }})</span></h4>
-            </div>
-            <div class="col-md-8">
-                @forelse ($articles as $article)
-                <x-card class="mb-4" title="{{ $article->title }}">
-                    <!-- articles/index.blade.php -->
-                    @slot('subtitle')
-                    {{ $article->created_at->format('d F, Y') }} authored by {{
-                    $article->user->name }}
-                    @endslot
-                    {{ $article->body }}
-                    <div class="mt-2 d-flex align-items-center justify-content-between gap-2">
-                        <div>
-                            <a href="{{ route('articles.show', $article) }}" class="btn btn-primary">
-                                Read more
-                            </a>
-                            <a href="{{ route('articles.edit', $article) }}" class="btn btn-success">
-                                Edit
-                            </a>
-                        </div>
-                        <form action="{{ route('articles.destroy', $article) }}" method='post'>
-                                @csrf
-                                @method('delete')
-                                <button type="submit" class="btn btn-danger">Hapus</button>
-                            </form>
-                        </div>
-                    </x-card>
-                @empty
-                    <div class="alert alert-info">Tidak ada data</div>
-                @endforelse
-            </div>
+<x-app-layout title="Articles category: {{ $category->name }}">
+    <div class="bg-light mb-5 border-bottom py-5" style="margin-top: -24px">
+        <div class="container">
+            <h1>{{ $category->name }}</h1>
+            <p class="text-muted lead">This page will show all articles by {{ $category->name }} category.</p>
         </div>
     </div>
- </x-app-layout>
+    <div class="container">
+        @empty(!$articles)
+        @foreach ($articles->chunk(3) as $chunk)
+        <div class="row mb-4">
+            @foreach ($chunk as $article)
+                <x-article :article="$article" />
+            @endforeach
+        </div>
+        @endforeach
+        @else
+            <div class="alert alert-info">No articles for now.</div>
+        @endempty
+    </div>
+</x-app-layout>
