@@ -15,6 +15,7 @@
             @endforeach
         </div>
         @endforeach
+        {{ $articles->links() }}
         @else
             <div class="alert alert-info">Tidak ada data</div>
         @endempty

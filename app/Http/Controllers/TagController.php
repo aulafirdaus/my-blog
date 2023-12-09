@@ -60,7 +60,7 @@ class TagController extends Controller
     {
         return view('tags.show', [
             'tag' => $tag,
-            'articles' => $tag->articles
+            'articles' => $tag->articles()->paginate(9),
         ]);
     }
 

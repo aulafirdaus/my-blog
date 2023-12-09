@@ -57,7 +57,7 @@ class CategoryController extends Controller
     {
         return view('categories.show', [
             'category' => $category,
-            'articles' => $category->articles,
+            'articles' => $category->articles()->paginate(9),
         ]);
     }
 

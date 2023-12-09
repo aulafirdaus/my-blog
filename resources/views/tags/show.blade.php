@@ -14,6 +14,7 @@
             @endforeach
         </div>
         @endforeach
+        {{ $articles->links() }}
         @else
         <div class="alert alert-info">No articles for now.</div>
         @endempty
