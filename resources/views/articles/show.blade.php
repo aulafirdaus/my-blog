@@ -18,8 +18,13 @@
                         <p class="text-light lead">{{ str($article->body)->limit(110) }}</p>
                         <div class="d-flex align-items-center justify-content-between mt-4">
                             <div class="text-white-50">
-                                {{ $article->created_at->format('d F, Y') }} by {{ $article->user->name }}
+                                {{ $article->created_at->format('d F, Y') }} by <a class="text-white" href="{{ route('users.show', $article->user) }}"> {{ $article->user->name }} </a>
                             </div>
+                            @if (Auth::user()?->is($article->user))
+                            <a class="btn btn-primary btn-sm" href="{{ route('articles.edit', $article) }}">
+                                Edit artikel
+                            </a>
+                            @endif
                         </div>
                     </div>
                 </div>

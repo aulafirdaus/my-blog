@@ -5,11 +5,9 @@
         </a>
         <div class="p-4 bg-light">
             <small class="card-subtitle mb-2 text-muted">{{ $article->created_at->format('d F, Y') }}</small>
-            <h5>
-                <a class="text-dark text-decoration-none" href="{{ route('articles.show', $article) }}">
+                <a class="d-block font-semibold text-dark text-decoration-none" href="{{ route('articles.show', $article) }}">
                     {{ $article->title }}
                 </a>
-            </h5>
             <div class="d-flex align-items-center mt-2">
                 <a class="text-decoration-none" href="{{ route('categories.show', $article->category) }}">{{
                     $article->category->name }}</a>

@@ -30,6 +30,7 @@ class RegisterController extends Controller
                     if ($user instanceof MustVerifyEmail && ! $user->hasVerifiedEmail()){
                         $user->sendEmailVerificationNotification();
                     }
+                    $user->update(['username' => $user->id  . now()->timestamp]);
                     Auth::login($user);
                 });
         return redirect(RouteServiceProvider::HOME);

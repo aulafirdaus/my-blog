@@ -31,13 +31,12 @@ Route::resource('articles', ArticleController::class);
 Route::resource('categories', CategoryController::class);
 Route::resource('tags', TagController::class);
 
-# Users
-Route::get('users', [UserController::class, 'index'])->name('users');
-Route::get('/users/create', fn () => 'Create New User');
-Route::post('/users', fn () => 'Store user into db');
-Route::get('/users/{user}', [UserController::class, 'show']);
-Route::get('users/{user}/edit', fn ($user) => "Edit User {$user}");
-Route::put('users/{user}', fn ($user) => "Update user {$user}");
-Route::delete('/users/{user}', fn ($user) => "Delete user {$user}");
-
 require __DIR__.'/auth.php';
+
+# Users
+Route::controller(UserController::class)->middleware('auth')->group(function () {
+    Route::get('/users', [UserController::class, 'index'])->name('users');
+    Route::get('/account/edit', 'edit')->name('users.edit');
+    Route::put('/account/edit', 'update')->name('users.update');
+    Route::get('/{user}', [UserController::class, 'show'])->name('users.show')->withoutMiddleware('auth');
+});

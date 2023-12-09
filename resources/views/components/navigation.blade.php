@@ -45,7 +45,11 @@
                 <li class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }}</a>
                     <ul class="dropdown-menu">
-                        <li><a href="#scrollspyHeading3" class="dropdown-item">Settings</a></li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('users.edit') }}">
+                                Settings
+                            </a>
+                        </li>
                         <li><a href="#scrollspyHeading4" class="dropdown-item">Change password</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
