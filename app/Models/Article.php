@@ -13,6 +13,8 @@ class Article extends Model
         'user_id', 'category_id', 'picture', 'title', 'slug', 'body'
     ];
 
+    protected $with = ['user', 'category', 'tags'];
+
     public function getRouteKeyName(){
         return 'slug';
     }

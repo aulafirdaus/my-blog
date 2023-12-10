@@ -20,7 +20,7 @@ class ArticleController extends Controller
     }
 
     public function index(){
-        $articles = Article::orderBy('created_at','DESC')->paginate(9);
+        $articles = Article::query()->latest()->paginate(9);
         // dd($articles);
         return view('articles.index', [
             'articles' => $articles
