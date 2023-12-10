@@ -16,9 +16,11 @@
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('gallery') ? 'active' : '' }}" href="{{ route('gallery') }}">Gallery</a>
                 </li>
+                {{-- @hasRole('admin')
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('users') ? 'active' : '' }}" href="{{ route('users') }}">Users</a>
                 </li>
+                @endHasRole --}}
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('articles') ? 'active' : '' }}" href="{{ route('articles.index') }}">Articles</a>
                 </li>
@@ -55,13 +57,20 @@
                                 Change password
                             </a>
                         </li>
+                        @hasAnyRoles(['admin', 'writer'])
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <a href="{{ route('articles.create') }}" class="dropdown-item">
                                 Create new article
                             </a>
                         </li>
-                        @can('is_admin')
+                        <li>
+                            <a class="dropdown-item" href="{{ route('articles.table') }}">
+                                Articles
+                            </a>
+                        </li>
+                        @endHasAnyRoles
+                        @hasRole('admin')
                         <li>
                             <a href="{{ route('categories.create') }}" class="dropdown-item">
                                 Create new category
@@ -73,7 +82,13 @@
                                 Create new tag
                             </a>
                         </li>
-                        @endcan
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('users') }}">
+                                Users
+                            </a>
+                        </li>
+                        @endHasRole
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <form method="POST" action="{{ route('logout') }}">

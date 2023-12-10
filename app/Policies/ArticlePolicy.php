@@ -10,6 +10,14 @@ class ArticlePolicy
 {
     use HandlesAuthorization;
 
+    public function viewIfOnlyAuthorOrAdmin(?User $user, Article $article)
+    {
+        if ($article->status == \App\Enums\ArticleStatus::PENDING) {
+            return $article->user_id == $user?->id ? true : false;
+        }
+        return true;
+    }
+
     /**
      * Determine whether the user can view any models.
      *

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -26,7 +27,12 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-        Gate::define('is_admin', fn ($user) => $user->isAdmin() ? true : null);
+        // Gate::define('is_admin', fn ($user) => $user->isAdmin() ? true : null);
         Gate::before(fn ($user, $ability) => $user->isAdmin() ? true : null);
+
+        Blade::directive('hasAnyRoles', fn ($roles) => "<?php if (auth()->user()->hasAnyRoles({$roles})): ?>");
+        Blade::directive('endHasAnyRoles', fn () => "<?php endif ?>");
+        Blade::directive('hasRole', fn ($role) => "<?php if (auth()->user()->hasRole($role)): ?>");
+        Blade::directive('endHasRole', fn () => "<?php endif ?>");
     }
 }

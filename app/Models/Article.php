@@ -13,10 +13,20 @@ class Article extends Model
         'user_id', 'category_id', 'picture', 'title', 'slug', 'body'
     ];
 
+    protected $casts = [
+        'status' => \App\Enums\ArticleStatus::class,
+        'published_at' => 'datetime'
+    ];
+
     protected $with = ['user', 'category', 'tags'];
 
     public function getRouteKeyName(){
         return 'slug';
+    }
+
+    public function scopePublished($query)
+    {
+        return $query->where('status', \App\Enums\ArticleStatus::PUBLISHED);
     }
 
     public function user(){

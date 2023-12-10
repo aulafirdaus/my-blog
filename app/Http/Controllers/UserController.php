@@ -8,14 +8,20 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except('show');
+    }
+
     public function index(Request $request){
         $users = User::query()
             ->whereNotNull('email_verified_at')
             ->whereNot('id', $request->user()->id)
-            // ->with('roles')
+            ->with('roles')
             ->latest()
             ->paginate(10);
         return view('users.index',[
+            'roles' => \App\Models\Role::select('id', 'name')->get(),
             'users' => $users,
         ]);
     }

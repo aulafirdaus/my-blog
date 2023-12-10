@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CategoryController;
@@ -27,6 +28,10 @@ Route::get('/', HomeController::class)->name('home');
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/gallery', [PageController::class, 'gallery'])->name('gallery');
 
+Route::controller(ArticleController::class)->middleware('can.write.article')->group(function () {
+    Route::get('articles/table', 'table')->name('articles.table');
+    Route::put('articles/{article}/update-status', 'updateStatus')->name('articles.update-status');
+});
 # Articles
 Route::resource('articles', ArticleController::class);
 Route::resource('categories', CategoryController::class);
@@ -40,10 +45,15 @@ Route::controller(ChangePasswordController::class)->middleware('auth')->group(fu
     Route::put('account/password-edit', 'update')->name('change-password');
 });
 
+# Roles
+Route::controller(RoleController::class)->middleware('only.admin')->group(function () {
+    Route::post('roles/assign/{user}', 'assign')->name('roles.assign');
+});
+
 # Users
-Route::controller(UserController::class)->middleware('auth')->group(function () {
-    Route::get('/users', [UserController::class, 'index'])->name('users');
+Route::controller(UserController::class)->group(function () {
+    Route::get('users', 'index')->name('users');
     Route::get('/account/edit', 'edit')->name('users.edit');
     Route::put('/account/edit', 'update')->name('users.update');
-    Route::get('/{user}', [UserController::class, 'show'])->name('users.show')->withoutMiddleware('auth');
+    Route::get('/{user}', [UserController::class, 'show'])->name('users.show');
 });

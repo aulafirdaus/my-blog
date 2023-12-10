@@ -6,6 +6,7 @@ use App\Models\Tag;
 use App\Models\User;
 use App\Models\Article;
 use App\Models\Category;
+use App\Enums\ArticleStatus;
 use Illuminate\Http\Request;
 use App\Http\Requests\ArticleRequest;
 use Illuminate\Support\Facades\Storage;
@@ -15,13 +16,38 @@ class ArticleController extends Controller
     public $categories;
     public $tags;
     public function __construct(){
-        $this->middleware(['auth', 'verified'])->except(['show', 'index']);
+        $this->middleware(['auth','verified', 'can.write.article'])->except(['show', 'index']);
         $this->categories = Category::select('id', 'name')->get();
         $this->tags = Tag::select('id', 'name')->get();
     }
 
+    public function table(Request $request)
+    {
+        $articles = Article::query()
+            ->without(['category', 'tags'])
+            ->when(!$request->user()->isAdmin(), fn ($query) => $query->whereBelongsTo($request->user()))
+            ->latest()
+            ->paginate(9);
+        return view('articles.table', [
+            'articles' => $articles,
+        ]);
+    }
+
+    public function updateStatus(Request $request, Article $article)
+    {
+        $article->forceFill([
+            'status' => $request->status,
+            'published_at' => $request->status == ArticleStatus::PUBLISHED ? now() : null,
+        ])->save();
+        return back();
+    }
+
     public function index(){
-        $articles = Article::query()->latest()->paginate(9);
+        $articles = Article::query()
+            ->with(['user', 'category', 'tags'])
+            ->where('status', ArticleStatus::PUBLISHED)
+            ->latest()
+            ->paginate(9);
         // dd($articles);
         return view('articles.index', [
             'articles' => $articles
@@ -29,9 +55,11 @@ class ArticleController extends Controller
     }
 
     public function show(Article $article){
+        $this->authorize('viewIfOnlyAuthorOrAdmin', $article);
         $relatedArticles = Article::query()
-            ->where('category_id', $article->category_id)
-            ->where('id', '!=', $article->id)
+            ->whereBelongsTo($article->category)
+            ->published()
+            ->whereNot('id', $article->id)
             ->latest()
             ->limit(9)
             ->get();
