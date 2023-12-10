@@ -50,7 +50,11 @@
                                 Settings
                             </a>
                         </li>
-                        <li><a href="#scrollspyHeading4" class="dropdown-item">Change password</a></li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('change-password.edit') }}">
+                                Change password
+                            </a>
+                        </li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <a href="{{ route('articles.create') }}" class="dropdown-item">

@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\ArticleController;
-use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
-use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ChangePasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,12 @@ Route::resource('categories', CategoryController::class);
 Route::resource('tags', TagController::class);
 
 require __DIR__.'/auth.php';
+
+# Change Password
+Route::controller(ChangePasswordController::class)->middleware('auth')->group(function () {
+    Route::get('account/password-edit', 'edit')->name('change-password.edit');
+    Route::put('account/password-edit', 'update')->name('change-password');
+});
 
 # Users
 Route::controller(UserController::class)->middleware('auth')->group(function () {
