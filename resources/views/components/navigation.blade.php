@@ -61,6 +61,7 @@
                                 Create new article
                             </a>
                         </li>
+                        @can('is_admin')
                         <li>
                             <a href="{{ route('categories.create') }}" class="dropdown-item">
                                 Create new category
@@ -72,6 +73,7 @@
                                 Create new tag
                             </a>
                         </li>
+                        @endcan
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <form method="POST" action="{{ route('logout') }}">
