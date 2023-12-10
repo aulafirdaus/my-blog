@@ -1,3 +1,4 @@
+@include('layouts.hljs')
 <x-app-layout title="{{ $article->title }} | Articles">
     <div class="bg-dark text-white mb-5 border-bottom py-5" style="margin-top: -24px">
         <div class="container">
