@@ -105,6 +105,7 @@ class ArticleController extends Controller
         }
         $article->tags()->detach();
         $article->delete();
-        return back();
+        return to_route('articles.index');
+        // return back();
     }
 }

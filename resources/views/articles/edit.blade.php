@@ -15,14 +15,16 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <div class="modal-title" id="exampleModalLabel">{{ $article->title }}</div <button type="button"
+                            <div class="modal-title" id="exampleModalLabel">{{ $article->title }}</div> <button type="button"
                                 class="btn-close" data-bs-dismiss="modal" aria- label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <p class="text-muted text-center">Are you really sure you want to delete
                                 it?</p>
                             <div class="d-flex align-items-center gap-2 justify-content-center">
-                                <form action="{{ route('articles.destroy', $article) }}" method="post" @csrf @method('delete')
+                                <form action="{{ route('articles.destroy', $article) }}" method="post"> 
+                                    @csrf
+                                    @method('delete')
                                     <button type="submit" class="btn btn-danger">
                                     Yes
                                     </button>
