@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Requests\ArticleRequest;
 use Illuminate\Support\Facades\Storage;
 
 class ArticleController extends Controller
@@ -48,14 +49,7 @@ class ArticleController extends Controller
         ]);
     }
 
-    public function store(Request $request){
-        $request->validate([
-            'title' => ['required'],
-            'body' => ['required'],
-            'category' => ['required', 'exists:categories,id'],
-            'tags' => ['required', 'array'],
-            'picture' => ['nullable', 'mimes:jpg,jpeg,png'],
-        ]);
+    public function store(ArticleRequest $request){
         // $atributes['category_id'] = $request->category;
         $fileRequest = $request->file('picture');
         $article = auth()->user()->articles()->create([
@@ -80,16 +74,9 @@ class ArticleController extends Controller
         ]);
     }
 
-    public function update(Request $request, Article $article){
+    public function update(ArticleRequest $request, Article $article){
         // abort_if(auth()->user()?->isNot($article->user), 401);
         $this->authorize('update', $article);
-        $request->validate([
-            'title' => ['required'],
-            'body' => ['required'],
-            'category' => ['required', 'exists:categories,id'],
-            'tags' => ['required', 'array'],
-            'picture' => ['nullable', 'mimes:jpg,bmp,png'],
-        ]);
         $fileRequest = $request->file('picture');
         $article->update([
             'title' => $title = $request->title,

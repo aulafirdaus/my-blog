@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use App\Http\Requests\TagRequest;
 
 class TagController extends Controller
 {
@@ -41,12 +42,8 @@ class TagController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TagRequest $request)
     {
-        $request->validate([
-            'name' => ['required'],
-        ]);
-
         Tag::create([
             'name' => $name = $request->name,
             'slug' => str($name . ' ' . str()->random(3))->slug(),
@@ -86,11 +83,8 @@ class TagController extends Controller
      * @param  \App\Models\Tag  $tag
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Tag $tag)
+    public function update(TagRequest $request, Tag $tag)
     {
-        $request->validate([
-            'name' => ['required'],
-        ]);
         $tag->update([
             'name' => $name = $request->name,
             'slug' => str($name . ' ' . str()->random(3))->slug(),
