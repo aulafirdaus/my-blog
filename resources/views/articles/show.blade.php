@@ -42,6 +42,21 @@
                     {!! str($article->body)->markdown() !!}
                 </div>
             </div>
+            @if (count($relatedArticles) > 0)
+                <div class="col-md-4">
+                    <h4>Related Articles</h4>
+                    <hr>
+                    <ul class="list-group list-group-flush">
+                        @foreach ($relatedArticles as $article)
+                        <li class="list-group-item">
+                            <a href="{{ route('articles.show', $article) }}" class="text-decoration-none">
+                                {{ $article->title }}
+                            </a>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
         </div>
     </div>
 </x-app-layout>

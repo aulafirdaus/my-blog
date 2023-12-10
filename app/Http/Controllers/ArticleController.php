@@ -28,8 +28,15 @@ class ArticleController extends Controller
     }
 
     public function show(Article $article){
+        $relatedArticles = Article::query()
+            ->where('category_id', $article->category_id)
+            ->where('id', '!=', $article->id)
+            ->latest()
+            ->limit(9)
+            ->get();
         return view('articles.show', [
             'article' => $article,
+            'relatedArticles' => $relatedArticles,
         ]);
     }
 
