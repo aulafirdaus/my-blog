@@ -21,11 +21,11 @@
                             <div class="text-white-50">
                                 {{ $article->created_at->format('d F, Y') }} by <a class="text-white" href="{{ route('users.show', $article->user) }}"> {{ $article->user->name }} </a>
                             </div>
-                            @if (Auth::user()?->is($article->user))
+                            @can ('update', $article)
                             <a class="btn btn-primary btn-sm" href="{{ route('articles.edit', $article) }}">
                                 Edit artikel
                             </a>
-                            @endif
+                            @endcan
                         </div>
                     </div>
                 </div>

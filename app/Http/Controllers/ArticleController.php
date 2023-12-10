@@ -71,7 +71,8 @@ class ArticleController extends Controller
     }
 
     public function edit(Article $article){
-        abort_if(auth()->user()?->isNot($article->user), 401);
+        // abort_if(auth()->user()?->isNot($article->user), 401);
+        $this->authorize('view', $article);
         return view('articles.edit', [
             'article' => $article,
             'categories' => $this->categories,
@@ -80,7 +81,8 @@ class ArticleController extends Controller
     }
 
     public function update(Request $request, Article $article){
-        abort_if(auth()->user()?->isNot($article->user), 401);
+        // abort_if(auth()->user()?->isNot($article->user), 401);
+        $this->authorize('update', $article);
         $request->validate([
             'title' => ['required'],
             'body' => ['required'],
@@ -102,7 +104,8 @@ class ArticleController extends Controller
     }
 
     public function destroy(Article $article){
-        abort_if(auth()->user()?->isNot($article->user), 401);
+        // abort_if(auth()->user()?->isNot($article->user), 401);
+        $this->authorize('delete', $article);
         if ($article->picture) {
             Storage::delete($article->picture);
         }
