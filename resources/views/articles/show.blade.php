@@ -20,12 +20,27 @@
                         <div class="d-flex align-items-center justify-content-between mt-4">
                             <div class="text-white-50">
                                 {{ $article->created_at->format('d F, Y') }} by <a class="text-white" href="{{ route('users.show', $article->user) }}"> {{ $article->user->name }} </a>
+                                &middot;
+                                    <span>
+                                        {{ $article->likes_count }} {{ str('like')->plural($article->likes_count) }}
+                                    </span>
                             </div>
-                            @can ('update', $article)
-                            <a class="btn btn-primary btn-sm" href="{{ route('articles.edit', $article) }}">
-                                Edit artikel
-                            </a>
-                            @endcan
+                            @auth
+                            <div class="d-flex align-items-center gap-2">
+                                <form method="POST" action="{{ route('articles.like', $article) }}">
+                                    @csrf
+                                    <a class="btn btn-sm btn-primary" href="{{ route('articles.like', $article) }}" onclick="event.preventDefault();
+                                                            this.closest('form').submit();">
+                                        {{ $article->alreadyLiked() ? 'Unlike' : 'Like' }}
+                                    </a>
+                                </form>
+                                @can ('update', $article)
+                                    <a class="btn btn-primary btn-sm" href="{{ route('articles.edit', $article) }}">
+                                        Edit artikel
+                                    </a>
+                                @endcan
+                                </div>
+                            @endauth
                         </div>
                     </div>
                 </div>

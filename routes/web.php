@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -37,9 +38,16 @@ Route::controller(ArticleController::class)->middleware('can.write.article')->gr
 Route::resource('articles', ArticleController::class);
 Route::resource('categories', CategoryController::class);
 Route::resource('tags', TagController::class);
-Route::controller(CommentController::class)->group(function () {
-    Route::post('comments/{article}', 'store')->name('comments.store');
-    Route::delete('comments/{comment}', 'destroy')->name('comments.delete');
+
+Route::middleware('auth')->group( function () {
+    Route::controller(CommentController::class)->group(function () {
+        Route::post('comments/{article}', 'store')->name('comments.store');
+        Route::delete('comments/{comment}', 'destroy')->name('comments.delete');
+    });
+    Route::controller(LikeController::class)->group(function () {
+        Route::post('like-comments/{comment}', 'likeComment')->name('comments.like');
+        Route::post('like-article/{article}', 'likeArticle')->name('articles.like');
+    });
 });
 
 require __DIR__.'/auth.php';

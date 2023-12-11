@@ -5,19 +5,17 @@
     <small class="text-muted d-flex align-items-center gap-2">
         {{ $comment->user->name }} &middot; {{ $comment->created_at->diffForHumans() }}
         &middot;
-        {{-- <span>
+        <span>
             {{ $comment->likes_count }} {{ str('like')->plural($comment->likes_count) }}
-        </span> --}}
+        </span>
         @auth
-        {{-- <form method="POST" action="{{ route('comments.like', $comment) }}">
+        <form method="POST" action="{{ route('comments.like', $comment) }}">
             @csrf
             <a class="text-primary text-decoration-none" href="{{ route('comments.like', $comment) }}" onclick="event.preventDefault();
                                             this.closest('form').submit();">
-                {{ $comment->alreadyLiked()
-                ? 'Unlike'
-                : 'Like' }}
+                {{ $comment->alreadyLiked() ? 'Unlike' : 'Like' }}
             </a>
-        </form> --}}
+        </form>
         @if (Auth::user()?->id == $comment->user_id)
         &middot; <form method="POST" action="{{ route('comments.delete', $comment) }}">
             @csrf

@@ -68,10 +68,11 @@ class ArticleController extends Controller
         $comments = Comment::query()
         ->select('user_id', 'body', 'created_at', 'id')
         ->with('user')
+        ->withCount('likes')
         ->whereMorphedTo('commentable', $article)
         ->get();
         return view('articles.show', [
-            'article' => $article,
+            'article' => $article->loadCount('likes'),
             'relatedArticles' => $relatedArticles,
             'comments' => $comments,
         ]);

@@ -40,6 +40,21 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Comment::class);
     }
 
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    public function toggleLike($model)
+    {
+        $exists = $this->likes()->whereMorphedTo('likeable', $model)->exists();
+        if (!$exists) {
+            $this->likes()->save($model->likes()->make());
+        } else {
+            $this->likes()->whereMorphedTo('likeable', $model)->delete();
+        }
+    }
+
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'user_role');
