@@ -41,6 +41,8 @@
                 <div class="fw-light lead lh-base">
                     {!! str($article->body)->markdown() !!}
                 </div>
+                <x-articles.comment.block :comments="$comments" />
+                <x-articles.comment.form :action="route('comments.store', $article)" method="POST" />
             </div>
             @if (count($relatedArticles) > 0)
                 <div class="col-md-4">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Tag;
 use App\Models\User;
 use App\Models\Article;
+use App\Models\Comment;
 use App\Models\Category;
 use App\Enums\ArticleStatus;
 use Illuminate\Http\Request;
@@ -63,9 +64,16 @@ class ArticleController extends Controller
             ->latest()
             ->limit(9)
             ->get();
+
+        $comments = Comment::query()
+        ->select('user_id', 'body', 'created_at', 'id')
+        ->with('user')
+        ->whereMorphedTo('commentable', $article)
+        ->get();
         return view('articles.show', [
             'article' => $article,
             'relatedArticles' => $relatedArticles,
+            'comments' => $comments,
         ]);
     }
 

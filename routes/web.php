@@ -7,6 +7,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChangePasswordController;
 
@@ -36,6 +37,10 @@ Route::controller(ArticleController::class)->middleware('can.write.article')->gr
 Route::resource('articles', ArticleController::class);
 Route::resource('categories', CategoryController::class);
 Route::resource('tags', TagController::class);
+Route::controller(CommentController::class)->group(function () {
+    Route::post('comments/{article}', 'store')->name('comments.store');
+    Route::delete('comments/{comment}', 'destroy')->name('comments.delete');
+});
 
 require __DIR__.'/auth.php';
 
