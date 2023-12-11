@@ -35,6 +35,7 @@ Route::controller(ArticleController::class)->middleware('can.write.article')->gr
     Route::put('articles/{article}/update-status', 'updateStatus')->name('articles.update-status');
 });
 # Articles
+Route::get('articles/search', [ArticleController::class, 'search'])->name('articles.search');
 Route::resource('articles', ArticleController::class);
 Route::resource('categories', CategoryController::class);
 Route::resource('tags', TagController::class);

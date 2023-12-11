@@ -17,9 +17,18 @@ class ArticleController extends Controller
     public $categories;
     public $tags;
     public function __construct(){
-        $this->middleware(['auth','verified', 'can.write.article'])->except(['show', 'index']);
+        $this->middleware(['auth','verified', 'can.write.article'])->except(['show', 'search', 'index']);
         $this->categories = Category::select('id', 'name')->get();
         $this->tags = Tag::select('id', 'name')->get();
+    }
+
+    public function search(Request $request)
+    {
+        $articles = Article::search($request->q)
+            ->where('status', ArticleStatus::PUBLISHED)
+            ->orderBy('created_at', 'desc')
+            ->paginate(9);
+        return view('articles.index', ['articles' => $articles]);
     }
 
     public function table(Request $request)

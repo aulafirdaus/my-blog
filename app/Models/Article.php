@@ -5,10 +5,11 @@ namespace App\Models;
 use App\Traits\HasLike;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Laravel\Scout\Searchable;
 
 class Article extends Model
 {
-    use HasFactory, HasLike;
+    use HasFactory, HasLike, Searchable;
 
     protected $fillable = [
         'user_id', 'category_id', 'picture', 'title', 'slug', 'body'
@@ -20,6 +21,13 @@ class Article extends Model
     ];
 
     protected $with = ['user', 'category', 'tags'];
+
+    public function toSearchableArray()
+    {
+        return [
+            'title' => $this->title,
+        ];
+    }
 
     public function getRouteKeyName(){
         return 'slug';

@@ -37,6 +37,10 @@
                         @endforeach
                     </ul>
                 </li>
+                <form action="{{ route('articles.search') }}" method="GET" class="d-flex ms-4" role="search">
+                    <input class="form-control me-2" type="search" name="q" placeholder="Search" aria- label="Search">
+                    <button class="btn btn-outline-secondary" type="submit">Search</button>
+                </form>
             </ul>
             {{-- <form class="d-flex" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
