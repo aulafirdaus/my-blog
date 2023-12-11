@@ -48,7 +48,7 @@ class ArticleController extends Controller
             ->with(['user', 'category', 'tags'])
             ->where('status', ArticleStatus::PUBLISHED)
             ->latest()
-            ->paginate(9);
+            ->fastPaginate(9);
         // dd($articles);
         return view('articles.index', [
             'articles' => $articles
