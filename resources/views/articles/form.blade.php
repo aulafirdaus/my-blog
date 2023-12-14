@@ -1,8 +1,17 @@
 @csrf
 <div class="row">
     <div class="col-md-4">
-        <div class="mb-2">
+        {{-- <div class="mb-2">
             <input class="form-control" name="picture" type="file" id="picture">
+        </div> --}}
+        <div class="mb-2">
+            <label for="picture" class="form-label">Bukti Pembayaran</label>
+            <img class="img-preview img-fluid mb-3 col-sm-5">
+            <input type="file" id="picture" name="picture" accept=".jpg,.jpeg,.png" onchange="previewImage()"
+                class="form-control @error('picture') is-invalid @enderror" required>
+            @error('picture')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
         </div>
         <div class="mb-2">
             <select name="category" id="category" class="form-control @error('category') is-invalid @enderror">
@@ -67,4 +76,19 @@
     } );
 </script>
 <!-- End Select2 -->
+<script>
+    function previewImage() {
+        const image = document.querySelector('#picture');
+        const imgPreview = document.querySelector('.img-preview');
+        
+        imgPreview.style.display = 'block';
+        
+        const oFReader = new FileReader();
+        oFReader.readAsDataURL(image.files[0]);
+        
+        oFReader.onload = function(oFREvent) {
+        imgPreview.src = oFREvent.target.result;
+        }
+        };
+</script>
 @endPushOnce
